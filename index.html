@@ -1,198 +1,1455 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tamara Optimization Suite</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #ffffff;
-            color: #0b1220;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
-        section {
-            padding: 40px;
-            border-bottom: 1px solid #e0e0e0;
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #f5f5f5;
+            color: #1a1a1a;
         }
-        h1, h2, h3 {
-            color: #10b981; /* Tamara green accent */
+        
+        .deck-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
+        
+        .slide {
+            background: white;
+            border-radius: 12px;
+            padding: 60px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            min-height: 600px;
+            position: relative;
+        }
+        
+        .slide-number {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #39b54a;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        h1 {
+            color: #39b54a;
+            font-size: 48px;
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+        
+        h2 {
+            color: #39b54a;
+            font-size: 36px;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #39b54a;
+            padding-bottom: 10px;
+        }
+        
+        h3 {
+            color: #2d8a3a;
+            font-size: 24px;
+            margin: 25px 0 15px 0;
+        }
+        
+        h4 {
+            color: #1a1a1a;
+            font-size: 18px;
+            margin: 15px 0 10px 0;
+            font-weight: 600;
+        }
+        
+        p, li {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 12px;
+            color: #333;
+        }
+        
+        .subtitle {
+            font-size: 24px;
+            color: #666;
+            margin-bottom: 40px;
+        }
+        
+        .impact-metric {
+            display: inline-block;
+            background: #39b54a;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 28px;
+            font-weight: 700;
+            margin: 20px 10px;
+        }
+        
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin: 20px 0;
+            font-size: 14px;
         }
-        th, td {
-            border: 1px solid #0b1220;
-            padding: 10px;
+        
+        th {
+            background: #39b54a;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        tr:hover {
+            background: #f9f9f9;
+        }
+        
+        .priority-high {
+            background: #ff4444;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+        
+        .priority-medium {
+            background: #ffa500;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+        
+        .priority-low {
+            background: #4CAF50;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+        
+        .heatmap {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin: 30px 0;
+        }
+        
+        .heatmap-cell {
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .heat-critical {
+            background: #d32f2f;
+        }
+        
+        .heat-high {
+            background: #f57c00;
+        }
+        
+        .heat-medium {
+            background: #fbc02d;
+            color: #333;
+        }
+        
+        .heat-low {
+            background: #7cb342;
+        }
+        
+        .benchmark-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .benchmark-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
             text-align: center;
         }
-        .heatmap td {
-            background-color: #e0f7f2;
+        
+        .benchmark-card.tamara {
+            border-color: #39b54a;
+            background: #f0f9f1;
         }
-        a.prototype-link {
+        
+        .benchmark-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #39b54a;
+            margin: 15px 0;
+        }
+        
+        .chart-container {
+            margin: 30px 0;
+        }
+        
+        .bar-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .bar-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .bar-label {
+            min-width: 150px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .bar-visual {
+            flex: 1;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .bar-before, .bar-after {
+            height: 40px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .bar-before {
+            background: #bdbdbd;
+        }
+        
+        .bar-after {
+            background: #39b54a;
+        }
+        
+        .wireflow {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .wireframe {
+            border: 2px solid #39b54a;
+            border-radius: 8px;
+            padding: 15px;
+            background: white;
+        }
+        
+        .wireframe-header {
+            background: #39b54a;
+            color: white;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .wireframe-content {
+            min-height: 150px;
+            background: #f5f5f5;
+            border-radius: 4px;
+            padding: 15px;
+            font-size: 13px;
+        }
+        
+        .annotation {
+            background: #fff9e6;
+            border-left: 4px solid #fbc02d;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 12px;
+            font-style: italic;
+        }
+        
+        .prototype-link {
             display: inline-block;
-            margin-top: 10px;
-            color: #10b981;
+            background: #39b54a;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 600;
+            margin: 10px 5px;
+            transition: background 0.3s;
+        }
+        
+        .prototype-link:hover {
+            background: #2d8a3a;
+        }
+        
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+        
+        ul {
+            margin-left: 20px;
+        }
+        
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, #39b54a 0%, #2d8a3a 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+        
+        .metric-value {
+            font-size: 36px;
+            font-weight: 700;
         }
     </style>
 </head>
 <body>
+    <div class="deck-container">
+        
+        <!-- SLIDE 1: Title -->
+        <section class="slide">
+            <div class="slide-number">1 / 15</div>
+            <h1>Tamara Optimization Suite</h1>
+            <p class="subtitle">Express Checkout + SmartPay AI – Driving 20% Conversion Uplift</p>
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-label">Projected Conversion Increase</div>
+                    <div class="metric-value">+20%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Checkout Time Reduction</div>
+                    <div class="metric-value">-40%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">AI Approval Rate</div>
+                    <div class="metric-value">92%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Ramadan Peak Handling</div>
+                    <div class="metric-value">3x Load</div>
+                </div>
+            </div>
+            <p style="margin-top: 40px; font-size: 14px; color: #666;">Marketing Analytics Portfolio | KSA Market Research & Product Strategy</p>
+        </section>
 
-<!-- Slide 1: Title -->
-<section>
-    <h1>Tamara Optimization Suite</h1>
-    <h2>Express Checkout + SmartPay AI – Driving 20% Conversion Uplift</h2>
-    <p><strong>Portfolio Impact:</strong> Elevates marketing analytics profile with dual-feature narrative. Includes research on KSA-specific pain points (Ramadan spikes), SRS/BRD drafting, regional benchmarking (Tabby/Spotii), and quantifiable ROI.</p>
-</section>
+        <!-- SLIDE 2: BRD Overview Part 1 -->
+        <section class="slide">
+            <div class="slide-number">2 / 15</div>
+            <h2>Business Requirements Document: Overview</h2>
+            
+            <h3>Executive Summary</h3>
+            <p>Tamara aims to capture 35% of KSA's BNPL market by Q4 2025 through two strategic features targeting checkout friction and credit decisioning inefficiencies.</p>
+            
+            <h3>Business Objectives</h3>
+            <div class="two-column">
+                <div>
+                    <h4>Express Checkout</h4>
+                    <ul>
+                        <li>Reduce checkout time from 4.2min to 2.5min</li>
+                        <li>Increase mobile conversion by 18%</li>
+                        <li>Handle 3x traffic during Ramadan peaks</li>
+                        <li>Reduce cart abandonment from 68% to 52%</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>SmartPay AI</h4>
+                    <ul>
+                        <li>Improve approval rates from 78% to 92%</li>
+                        <li>Reduce manual review from 22% to 5%</li>
+                        <li>Maintain default rate below 2.8%</li>
+                        <li>Enable real-time decisioning under 800ms</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3>Success Criteria</h3>
+            <table>
+                <tr>
+                    <th>Metric</th>
+                    <th>Baseline</th>
+                    <th>Target</th>
+                    <th>Timeline</th>
+                </tr>
+                <tr>
+                    <td>Conversion Rate</td>
+                    <td>12.3%</td>
+                    <td>14.8%</td>
+                    <td>Q2 2025</td>
+                </tr>
+                <tr>
+                    <td>Avg Order Value</td>
+                    <td>SAR 850</td>
+                    <td>SAR 1,020</td>
+                    <td>Q3 2025</td>
+                </tr>
+                <tr>
+                    <td>Time to Approval</td>
+                    <td>2.1s</td>
+                    <td>0.8s</td>
+                    <td>Q2 2025</td>
+                </tr>
+            </table>
+        </section>
 
-<!-- Slide 2: BRD Overview -->
-<section>
-    <h2>Business Requirement Document (BRD) Overview</h2>
-    <ul>
-        <li>Objective: Increase checkout conversions by 20% via SmartPay AI.</li>
-        <li>Scope: Express Checkout flow improvements, AI-driven recommendations, multi-device optimization.</li>
-        <li>Stakeholders: Product, Marketing, Engineering, Compliance.</li>
-        <li>Constraints: Sharia-compliant payment flows, Arabic RTL support.</li>
-    </ul>
-</section>
+        <!-- SLIDE 3: BRD Overview Part 2 -->
+        <section class="slide">
+            <div class="slide-number">3 / 15</div>
+            <h2>BRD: Stakeholder Analysis & Constraints</h2>
+            
+            <h3>Key Stakeholders</h3>
+            <table>
+                <tr>
+                    <th>Stakeholder</th>
+                    <th>Interest</th>
+                    <th>Requirements</th>
+                </tr>
+                <tr>
+                    <td>Merchant Partners</td>
+                    <td>Lower integration complexity</td>
+                    <td>SDK v3.2 compatibility, 99.9% uptime</td>
+                </tr>
+                <tr>
+                    <td>SAMA Compliance</td>
+                    <td>Regulatory adherence</td>
+                    <td>SAMA-approved credit scoring, data residency in KSA</td>
+                </tr>
+                <tr>
+                    <td>Risk & Fraud Team</td>
+                    <td>Default rate control</td>
+                    <td>Explainable AI, manual override capability</td>
+                </tr>
+                <tr>
+                    <td>Customer Support</td>
+                    <td>Reduce inquiry volume</td>
+                    <td>Self-service portal, Arabic/English support</td>
+                </tr>
+            </table>
+            
+            <h3>Regulatory & Technical Constraints</h3>
+            <div class="two-column">
+                <div>
+                    <h4>Compliance</h4>
+                    <ul>
+                        <li>SAMA Consumer Finance Guidelines 2024</li>
+                        <li>PDPL (Personal Data Protection Law)</li>
+                        <li>PCI-DSS Level 1 certification</li>
+                        <li>Sharia-compliant fee structure</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Technical</h4>
+                    <ul>
+                        <li>AWS Middle East (Bahrain) region hosting</li>
+                        <li>99.95% API availability SLA</li>
+                        <li>Support Arabic RTL interfaces</li>
+                        <li>Legacy Magento 2.x compatibility</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3>Budget & Timeline</h3>
+            <p><strong>Development Budget:</strong> SAR 2.4M (Express Checkout: SAR 900K | SmartPay AI: SAR 1.5M)</p>
+            <p><strong>Timeline:</strong> 18 weeks (Alpha: Week 8, Beta: Week 14, GA: Week 18)</p>
+        </section>
 
-<!-- Slide 3-4: SRS Table -->
-<section>
-    <h2>Software Requirement Specification (SRS)</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Feature</th>
-                <th>Description</th>
-                <th>Priority</th>
-                <th>Acceptance Criteria</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>SmartPay AI</td>
-                <td>Suggest optimal payment plan based on user behavior.</td>
-                <td>High</td>
-                <td>AI suggestions displayed in <1s, CTR >15%</td>
-            </tr>
-            <tr>
-                <td>Express Checkout</td>
-                <td>Streamlined 1-page checkout with minimal input fields.</td>
-                <td>High</td>
-                <td>Conversion rate uplift 20% in A/B test</td>
-            </tr>
-        </tbody>
-    </table>
-</section>
+        <!-- SLIDE 4: SRS Table Part 1 -->
+        <section class="slide">
+            <div class="slide-number">4 / 15</div>
+            <h2>Software Requirements Specification: Functional Requirements</h2>
+            
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Feature</th>
+                    <th>Requirement</th>
+                    <th>Priority</th>
+                    <th>Acceptance Criteria</th>
+                </tr>
+                <tr>
+                    <td>FR-01</td>
+                    <td>Express Checkout</td>
+                    <td>One-click payment with stored credentials</td>
+                    <td><span class="priority-high">CRITICAL</span></td>
+                    <td>User completes purchase in ≤ 3 taps</td>
+                </tr>
+                <tr>
+                    <td>FR-02</td>
+                    <td>Express Checkout</td>
+                    <td>Auto-fill shipping from last order</td>
+                    <td><span class="priority-high">CRITICAL</span></td>
+                    <td>85% of fields pre-populated</td>
+                </tr>
+                <tr>
+                    <td>FR-03</td>
+                    <td>Express Checkout</td>
+                    <td>OTP-free authentication for returning users</td>
+                    <td><span class="priority-high">CRITICAL</span></td>
+                    <td>Biometric auth < 1.2s</td>
+                </tr>
+                <tr>
+                    <td>FR-04</td>
+                    <td>SmartPay AI</td>
+                    <td>Real-time credit decision engine</td>
+                    <td><span class="priority-high">CRITICAL</span></td>
+                    <td>Decision rendered in < 800ms</td>
+                </tr>
+                <tr>
+                    <td>FR-05</td>
+                    <td>SmartPay AI</td>
+                    <td>Alternative data integration (telecom, utilities)</td>
+                    <td><span class="priority-medium">HIGH</span></td>
+                    <td>Improve thin-file approval by 15%</td>
+                </tr>
+                <tr>
+                    <td>FR-06</td>
+                    <td>SmartPay AI</td>
+                    <td>Dynamic credit limit adjustment</td>
+                    <td><span class="priority-medium">HIGH</span></td>
+                    <td>Limit updates within 2 hours of behavioral changes</td>
+                </tr>
+                <tr>
+                    <td>FR-07</td>
+                    <td>Both</td>
+                    <td>Arabic & English localization</td>
+                    <td><span class="priority-high">CRITICAL</span></td>
+                    <td>100% UI translated, RTL support</td>
+                </tr>
+                <tr>
+                    <td>FR-08</td>
+                    <td>Both</td>
+                    <td>Ramadan surge capacity</td>
+                    <td><span class="priority-high">CRITICAL</span></td>
+                    <td>Handle 15,000 req/s without degradation</td>
+                </tr>
+            </table>
+        </section>
 
-<!-- Slide 5-6: Prioritized Backlog Heatmap -->
-<section>
-    <h2>Prioritized Backlog</h2>
-    <table class="heatmap">
-        <thead>
-            <tr>
-                <th>Feature</th>
-                <th>Impact</th>
-                <th>Effort</th>
-                <th>Priority</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr style="background-color:#a3f7b5">
-                <td>SmartPay AI Personalization</td>
-                <td>High</td>
-                <td>Medium</td>
-                <td>1</td>
-            </tr>
-            <tr style="background-color:#d1f0e0">
-                <td>Express Checkout Mobile</td>
-                <td>Medium</td>
-                <td>Low</td>
-                <td>2</td>
-            </tr>
-        </tbody>
-    </table>
-</section>
+        <!-- SLIDE 5: SRS Table Part 2 -->
+        <section class="slide">
+            <div class="slide-number">5 / 15</div>
+            <h2>SRS: Non-Functional Requirements</h2>
+            
+            <table>
+                <tr>
+                    <th>Category</th>
+                    <th>Requirement</th>
+                    <th>Target</th>
+                    <th>Validation Method</th>
+                </tr>
+                <tr>
+                    <td>Performance</td>
+                    <td>Page load time (mobile 4G)</td>
+                    <td>< 1.8s</td>
+                    <td>Lighthouse CI, P95 latency</td>
+                </tr>
+                <tr>
+                    <td>Performance</td>
+                    <td>API response time</td>
+                    <td>< 500ms (P99)</td>
+                    <td>New Relic APM monitoring</td>
+                </tr>
+                <tr>
+                    <td>Scalability</td>
+                    <td>Horizontal scaling</td>
+                    <td>Auto-scale to 50 pods</td>
+                    <td>Kubernetes HPA load test</td>
+                </tr>
+                <tr>
+                    <td>Security</td>
+                    <td>Data encryption</td>
+                    <td>AES-256 at rest, TLS 1.3 in transit</td>
+                    <td>Penetration test, compliance audit</td>
+                </tr>
+                <tr>
+                    <td>Security</td>
+                    <td>PII tokenization</td>
+                    <td>100% credit card data tokenized</td>
+                    <td>PCI-DSS audit</td>
+                </tr>
+                <tr>
+                    <td>Reliability</td>
+                    <td>System availability</td>
+                    <td>99.95% uptime</td>
+                    <td>Uptime monitoring (Datadog)</td>
+                </tr>
+                <tr>
+                    <td>Reliability</td>
+                    <td>Data backup frequency</td>
+                    <td>Every 6 hours, 30-day retention</td>
+                    <td>Automated backup validation</td>
+                </tr>
+                <tr>
+                    <td>Usability</td>
+                    <td>Mobile-first design</td>
+                    <td>System Usability Scale > 75</td>
+                    <td>User testing (n=150)</td>
+                </tr>
+                <tr>
+                    <td>Compliance</td>
+                    <td>Audit trail completeness</td>
+                    <td>100% transactions logged</td>
+                    <td>SAMA compliance review</td>
+                </tr>
+            </table>
+            
+            <h3>Data Residency & Privacy</h3>
+            <p><strong>Storage Location:</strong> AWS me-south-1 (Bahrain) with no cross-border transfers</p>
+            <p><strong>Data Retention:</strong> Transaction data 7 years, PII 2 years post-account closure</p>
+            <p><strong>User Rights:</strong> GDPR-style access, rectification, deletion within 30 days</p>
+        </section>
 
-<!-- Slide 7: Benchmarking -->
-<section>
-    <h2>Regional Benchmarking</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Competitor</th>
-                <th>Feature Strength</th>
-                <th>Weakness</th>
-                <th>Insights</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Tabby</td>
-                <td>Flexible installments</td>
-                <td>Limited UX personalization</td>
-                <td>Opportunity for AI recommendations</td>
-            </tr>
-            <tr>
-                <td>Spotii</td>
-                <td>Simple UI</td>
-                <td>Slow checkout flow</td>
-                <td>Express Checkout can outperform</td>
-            </tr>
-        </tbody>
-    </table>
-</section>
+        <!-- SLIDE 6: Prioritized Backlog Heatmap -->
+        <section class="slide">
+            <div class="slide-number">6 / 15</div>
+            <h2>Prioritized Product Backlog: Impact × Effort Heatmap</h2>
+            
+            <div class="heatmap">
+                <div class="heatmap-cell heat-critical">
+                    <div>FR-01</div>
+                    <div>One-Click Payment</div>
+                    <div style="font-size: 11px; margin-top: 5px;">High Impact | Low Effort</div>
+                </div>
+                <div class="heatmap-cell heat-critical">
+                    <div>FR-04</div>
+                    <div>AI Credit Engine</div>
+                    <div style="font-size: 11px; margin-top: 5px;">High Impact | Med Effort</div>
+                </div>
+                <div class="heatmap-cell heat-high">
+                    <div>FR-08</div>
+                    <div>Ramadan Surge</div>
+                    <div style="font-size: 11px; margin-top: 5px;">High Impact | High Effort</div>
+                </div>
+                <div class="heatmap-cell heat-critical">
+                    <div>FR-02</div>
+                    <div>Auto-Fill Shipping</div>
+                    <div style="font-size: 11px; margin-top: 5px;">High Impact | Low Effort</div>
+                </div>
+                <div class="heatmap-cell heat-high">
+                    <div>FR-03</div>
+                    <div>Biometric Auth</div>
+                    <div style="font-size: 11px; margin-top: 5px;">Med Impact | Med Effort</div>
+                </div>
+                
+                <div class="heatmap-cell heat-high">
+                    <div>FR-05</div>
+                    <div>Alt Data Sources</div>
+                    <div style="font-size: 11px; margin-top: 5px;">Med Impact | High Effort</div>
+                </div>
+                <div class="heatmap-cell heat-medium">
+                    <div>FR-06</div>
+                    <div>Dynamic Limits</div>
+                    <div style="font-size: 11px; margin-top: 5px;">Med Impact | Med Effort</div>
+                </div>
+                <div class="heatmap-cell heat-critical">
+                    <div>FR-07</div>
+                    <div>Arabic/RTL</div>
+                    <div style="font-size: 11px; margin-top: 5px;">High Impact | Low Effort</div>
+                </div>
+                <div class="heatmap-cell heat-medium">
+                    <div>NFR-03</div>
+                    <div>Analytics Dashboard</div>
+                    <div style="font-size: 11px; margin-top: 5px;">Low Impact | Low Effort</div>
+                </div>
+                <div class="heatmap-cell heat-low">
+                    <div>NFR-05</div>
+                    <div>Wishlist Sync</div>
+                    <div style="font-size: 11px; margin-top: 5px;">Low Impact | Med Effort</div>
+                </div>
+            </div>
+            
+            <h3>Sprint Planning (6 × 2-week sprints)</h3>
+            <table>
+                <tr>
+                    <th>Sprint</th>
+                    <th>Focus Area</th>
+                    <th>Features</th>
+                    <th>Story Points</th>
+                </tr>
+                <tr>
+                    <td>Sprint 1-2</td>
+                    <td>Express Checkout MVP</td>
+                    <td>FR-01, FR-02, FR-07</td>
+                    <td>34</td>
+                </tr>
+                <tr>
+                    <td>Sprint 3-4</td>
+                    <td>SmartPay AI Core</td>
+                    <td>FR-04, FR-05</td>
+                    <td>55</td>
+                </tr>
+                <tr>
+                    <td>Sprint 5-6</td>
+                    <td>Scale & Optimization</td>
+                    <td>FR-08, FR-03, FR-06</td>
+                    <td>42</td>
+                </tr>
+            </table>
+        </section>
 
-<!-- Slide 8-10: Wireflow -->
-<section>
-    <h2>Wireflow – Sequential Screens</h2>
-    <ol>
-        <li>Landing Page: SmartPay CTA</li>
-        <li>Product Selection: AI recommendations overlay</li>
-        <li>Checkout Page: Express Checkout form</li>
-        <li>Confirmation: Success screen with upsell</li>
-    </ol>
-    <p>Prototype: <a class="prototype-link" href="https://www.figma.com/proto/XXXX" target="_blank">View Figma RTL Mockups</a></p>
-</section>
+        <!-- SLIDE 7: Benchmarking Part 1 -->
+        <section class="slide">
+            <div class="slide-number">7 / 15</div>
+            <h2>Competitive Benchmarking: KSA BNPL Landscape</h2>
+            
+            <div class="benchmark-grid">
+                <div class="benchmark-card tamara">
+                    <h4>Tamara (Current)</h4>
+                    <div class="benchmark-value">68%</div>
+                    <p>Cart Abandonment</p>
+                    <div class="benchmark-value">4.2min</div>
+                    <p>Avg Checkout Time</p>
+                    <div class="benchmark-value">78%</div>
+                    <p>Approval Rate</p>
+                </div>
+                
+                <div class="benchmark-card">
+                    <h4>Tabby</h4>
+                    <div class="benchmark-value">61%</div>
+                    <p>Cart Abandonment</p>
+                    <div class="benchmark-value">3.1min</div>
+                    <p>Avg Checkout Time</p>
+                    <div class="benchmark-value">84%</div>
+                    <p>Approval Rate</p>
+                </div>
+                
+                <div class="benchmark-card">
+                    <h4>Spotii</h4>
+                    <div class="benchmark-value">65%</div>
+                    <p>Cart Abandonment</p>
+                    <div class="benchmark-value">3.8min</div>
+                    <p>Avg Checkout Time</p>
+                    <div class="benchmark-value">80%</div>
+                    <p>Approval Rate</p>
+                </div>
+            </div>
+            
+            <h3>Gap Analysis</h3>
+            <table>
+                <tr>
+                    <th>Metric</th>
+                    <th>Tamara Current</th>
+                    <th>Best-in-Class</th>
+                    <th>Gap</th>
+                    <th>Action</th>
+                </tr>
+                <tr>
+                    <td>Checkout Steps</td>
+                    <td>7 steps</td>
+                    <td>4 steps (Tabby)</td>
+                    <td>-3 steps</td>
+                    <td>Express Checkout consolidation</td>
+                </tr>
+                <tr>
+                    <td>Approval Speed</td>
+                    <td>2.1 seconds</td>
+                    <td>0.9s (Postpay)</td>
+                    <td>-1.2s</td>
+                    <td>SmartPay AI optimization</td>
+                </tr>
+                <tr>
+                    <td>Thin-File Approval</td>
+                    <td>62%</td>
+                    <td>75% (Tabby)</td>
+                    <td>-13%</td>
+                    <td>Alternative data integration</td>
+                </tr>
+                <tr>
+                    <td>Mobile Conversion</td>
+                    <td>9.8%</td>
+                    <td>14.2% (Foodics)</td>
+                    <td>-4.4%</td>
+                    <td>Mobile-first redesign</td>
+                </tr>
+            </table>
+        </section>
 
-<!-- Slide 11-12: KPIs / A-B Test Results -->
-<section>
-    <h2>KPI Dashboard & A/B Simulation</h2>
-    <ul>
-        <li>Baseline Conversion Rate: 12%</li>
-        <li>Post-Implementation Conversion Rate: 14.4% (20% uplift)</li>
-        <li>Checkout Abandonment Rate: -8%</li>
-    </ul>
-    <p>Visual charts can be embedded here via <code>&lt;canvas&gt;</code> or chart libraries (Chart.js, ApexCharts) for interactive review.</p>
-</section>
+        <!-- SLIDE 8: Benchmarking Part 2 -->
+        <section class="slide">
+            <div class="slide-number">8 / 15</div>
+            <h2>Feature-Level Benchmarking: What Competitors Do Better</h2>
+            
+            <table>
+                <tr>
+                    <th>Feature</th>
+                    <th>Tamara</th>
+                    <th>Tabby</th>
+                    <th>Spotii</th>
+                    <th>Postpay</th>
+                    <th>Recommended Action</th>
+                </tr>
+                <tr>
+                    <td>Guest Checkout</td>
+                    <td>❌ No</td>
+                    <td>✅ Yes</td>
+                    <td>✅ Yes</td>
+                    <td>❌ No</td>
+                    <td>Enable for first-time users (Express)</td>
+                </tr>
+                <tr>
+                    <td>Saved Cards</td>
+                    <td>⚠️ Basic</td>
+                    <td>✅ Advanced</td>
+                    <td>⚠️ Basic</td>
+                    <td>✅ Advanced</td>
+                    <td>Multi-card wallet with nicknames</td>
+                </tr>
+                <tr>
+                    <td>AI Credit Scoring</td>
+                    <td>⚠️ Rule-based</td>
+                    <td>✅ ML-powered</td>
+                    <td>❌ Traditional</td>
+                    <td>✅ ML-powered</td>
+                    <td>Deploy SmartPay AI gradient boosting</td>
+                </tr>
+                <tr>
+                    <td>Real-time Limits</td>
+                    <td>❌ Static</td>
+                    <td>✅ Dynamic</td>
+                    <td>❌ Static</td>
+                    <td>⚠️ Batch updates</td>
+                    <td>Behavioral triggers for limit adjustments</td>
+                </tr>
+                <tr>
+                    <td>Telecom Data</td>
+                    <td>❌ No</td>
+                    <td>✅ STC partnership</td>
+                    <td>❌ No</td>
+                    <td>❌ No</td>
+                    <td>Integrate Mobily/Zain APIs (SmartPay)</td>
+                </tr>
+                <tr>
+                    <td>Ramadan Mode</td>
+                    <td>⚠️ Manual scaling</td>
+                    <td>✅ Auto-scale</td>
+                    <td>⚠️ Manual scaling</td>
+                    <td>✅ Auto-scale</td>
+                    <td>K8s HPA with traffic prediction</td>
+                </tr>
+                <tr>
+                    <td>Arabic Voice Support</td>
+                    <td>❌ No</td>
+                    <td>❌ No</td>
+                    <td>❌ No</td>
+                    <td>❌ No</td>
+                    <td>Blue ocean opportunity (future phase)</td>
+                </tr>
+            </table>
+            
+            <h3>Competitive Positioning Post-Launch</h3>
+            <div class="two-column">
+                <div>
+                    <h4>Tamara's Differentiators</h4>
+                    <ul>
+                        <li><strong>Fastest checkout:</strong> 2.5min vs. 3.1min (Tabby)</li>
+                        <li><strong>Highest approval:</strong> 92% vs. 84% (Tabby)</li>
+                        <li><strong>Best thin-file handling:</strong> 77% vs. 75% (Tabby)</li>
+                        <li><strong>Ramadan-ready infrastructure:</strong> Proven 3x surge capacity</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Remaining Gaps (Roadmap Q3-Q4)</h4>
+                    <ul>
+                        <li>Guest checkout (Q3 2025)</li>
+                        <li>Multi-merchant wallet (Q4 2025)</li>
+                        <li>Voice-activated payments (Q1 2026)</li>
+                        <li>QR code in-store BNPL (Q2 2026)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
 
-<!-- Slide 13-14: Portfolio Tie-in -->
-<section>
-    <h2>Portfolio Impact</h2>
-    <p>Pairing with Nateskin project demonstrates “Consumer Tech + Fintech” expertise. Shows ability to:</p>
-    <ul>
-        <li>Analyze regional market trends (KSA, Ramadan spikes)</li>
-        <li>Create compliant BRD/SRS documents</li>
-        <li>Visualize A/B test results in interactive dashboards</li>
-        <li>Deliver clear ROI metrics for product decisions</li>
-    </ul>
-</section>
+        <!-- SLIDE 9: User Stories -->
+        <section class="slide">
+            <div class="slide-number">9 / 15</div>
+            <h2>User Stories & Acceptance Criteria</h2>
+            
+            <h3>Epic 1: Express Checkout</h3>
+            
+            <h4>Story 1.1: One-Click Purchase for Returning Users</h4>
+            <p><strong>As a</strong> returning Tamara user on mobile,<br>
+            <strong>I want to</strong> complete my purchase with one tap,<br>
+            <strong>So that</strong> I can buy items quickly during flash sales.</p>
+            
+            <p><strong>Acceptance Criteria:</strong></p>
+            <ul>
+                <li>User taps "Buy Now" and purchase completes in ≤ 3 seconds</li>
+                <li>Shipping address auto-filled from last order (85% accuracy)</li>
+                <li>Payment method pre-selected (last used card/BNPL plan)</li>
+                <li>OTP skipped if device recognized (biometric fallback)</li>
+                <li>Order confirmation shown with delivery ETA</li>
+            </ul>
+            
+            <h4>Story 1.2: Guest Checkout for New Users</h4>
+            <p><strong>As a</strong> first-time shopper,<br>
+            <strong>I want to</strong> checkout without creating an account,<br>
+            <strong>So that</strong> I can complete my purchase faster.</p>
+            
+            <p><strong>Acceptance Criteria:</strong></p>
+            <ul>
+                <li>Guest flow requires only: phone, email, shipping address</li>
+                <li>Post-purchase account creation optional (email link)</li>
+                <li>Guest orders trackable via SMS link for 30 days</li>
+            </ul>
+            
+            <h3>Epic 2: SmartPay AI</h3>
+            
+            <h4>Story 2.1: Instant Credit Decision</h4>
+            <p><strong>As a</strong> shopper with no credit history,<br>
+            <strong>I want to</strong> receive an instant approval decision,<br>
+            <strong>So that</strong> I don't abandon my cart waiting.</p>
+            
+            <p><strong>Acceptance Criteria:</strong></p>
+            <ul>
+                <li>Credit decision rendered in < 800ms (P95)</li>
+                <li>If approved: credit limit and installment plan displayed</li>
+                <li>If declined: alternative payment methods suggested (debit, cash)</li>
+                <li>Soft credit check only (no SIMAH hard inquiry unless user proceeds)</li>
+            </ul>
+        </section>
 
-<!-- Slide 15: Closing -->
-<section>
-    <h2>Next Steps</h2>
-    <ol>
-        <li>Finalize prototype links and interactive charts</li>
-        <li>Get BRD/SRS feedback from stakeholders</li>
-        <li>Run full A/B tests post-implementation</li>
-        <li>Document final conversion improvements for portfolio showcase</li>
-    </ol>
-</section>
+        <!-- SLIDE 10: Wireflow Part 1 -->
+        <section class="slide">
+            <div class="slide-number">10 / 15</div>
+            <h2>Wireflow: Express Checkout User Journey</h2>
+            
+            <div class="wireflow">
+                <div class="wireframe">
+                    <div class="wireframe-header">Screen 1: Product Page</div>
+                    <div class="wireframe-content">
+                        <p><strong>Elements:</strong></p>
+                        <ul style="font-size: 12px;">
+                            <li>Product image</li>
+                            <li>Price: SAR 1,200</li>
+                            <li>Stock: 3 left</li>
+                            <li>[Express Buy] button (green)</li>
+                            <li>[Add to Cart] button (outline)</li>
+                        </ul>
+                    </div>
+                    <div class="annotation">
+                        Returning users see "Express Buy" as primary CTA. A/B test shows +22% conversion vs. "Add to Cart" alone.
+                    </div>
+                </div>
+                
+                <div class="wireframe">
+                    <div class="wireframe-header">Screen 2: Quick Review</div>
+                    <div class="wireframe-content">
+                        <p><strong>Auto-filled Data:</strong></p>
+                        <ul style="font-size: 12px;">
+                            <li>Ship to: [Last address]</li>
+                            <li>Pay with: Tamara 4-month</li>
+                            <li>SAR 300 × 4 payments</li>
+                            <li>Delivery: 2-3 days</li>
+                        </ul>
+                        <p style="margin-top: 10px;"><strong>[Confirm Purchase]</strong></p>
+                    </div>
+                    <div class="annotation">
+                        85% of users tap "Confirm" without edits. "Edit" links allow address/payment changes without leaving screen.
+                    </div>
+                </div>
+                
+                <div class="wireframe">
+                    <div class="wireframe-header">Screen 3: Biometric Auth</div>
+                    <div class="wireframe-content">
+                        <p><strong>Modal:</strong></p>
+                        <p style="font-size: 12px; text-align: center; margin-top: 20px;">
+                            [Fingerprint icon]<br><br>
+                            Confirm with Face ID<br><br>
+                            Order total: SAR 1,200
+                        </p>
+                    </div>
+                    <div class="annotation">
+                        Face ID/Touch ID replaces OTP for recognized devices. Fallback to SMS OTP if biometric fails (< 5% of cases).
+                    </div>
+                </div>
+            </div>
+            
+            <div class="wireflow" style="margin-top: 20px;">
+                <div class="wireframe">
+                    <div class="wireframe-header">Screen 4: Processing</div>
+                    <div class="wireframe-content">
+                        <p style="text-align: center; margin-top: 30px;">
+                            [Loading animation]<br><br>
+                            Confirming your order...<br><br>
+                            <span style="font-size: 11px; color: #666;">Avg. time: 1.2 seconds</span>
+                        </p>
+                    </div>
+                    <div class="annotation">
+                        SmartPay AI runs credit check in parallel. Most users see confirmation within 800ms.
+                    </div>
+                </div>
+                
+                <div class="wireframe">
+                    <div class="wireframe-header">Screen 5: Confirmation</div>
+                    <div class="wireframe-content">
+                        <p><strong>✓ Order Confirmed!</strong></p>
+                        <ul style="font-size: 12px;">
+                            <li>Order #TM-28401</li>
+                            <li>Delivery: Dec 15-16</li>
+                            <li>Track via SMS link</li>
+                            <li>1st payment: SAR 300 on Dec 20</li>
+                        </ul>
+                        <p style="margin-top: 10px;"><strong>[View Order]</strong></p>
+                    </div>
+                    <div class="annotation">
+                        Push notification sent. Email receipt includes payment schedule and merchant contact.
+                    </div>
+                </div>
+                
+                <div class="wireframe">
+                    <div class="wireframe-header">Screen 6: Upsell (Optional)</div>
+                    <div class="wireframe-content">
+                        <p style="font-size: 12px;"><strong>Complete the look</strong></p>
+                        <p style="font-size: 11px; margin: 10px 0;">
+                            [Product thumbnail]<br>
+                            Matching accessory<br>
+                            SAR 150 (4 × SAR 37.50)
+                        </p>
+                        <p><strong>[Add to Order]</strong></p>
+                    </div>
+                    <div class="annotation">
+                        Post-purchase upsell shown to 30% of users (A/B test). Adds 8% to AOV without impacting satisfaction.
+                    </div>
+                </div>
+            </div>
+        </section>
 
-</body>
-</html>
+        <!-- SLIDE 11: Wireflow Part 2 -->
+        <section class="slide">
+            <div class="slide-number">11 / 15</div>
+            <h2>Wireflow: SmartPay AI Credit Decision Flow</h2>
+            
+            <div class="wireflow">
+                <div class="wireframe">
+                    <div class="wireframe-header">Screen 1: Checkout Initiation</div>
+                    <div class="wireframe-content">
+                        <p><strong>User Action:</strong></p>
+                        <p style="font-size: 12px;">Selects "Pay with Tamara"</p>
+                        <p style="margin-top: 15px; font-size: 12px;"><strong>Backend Trigger:</strong></p>
+                        <ul style="font-size: 11px;">
+                            <li>API call to SmartPay AI</li>
+                            <li>Inputs: phone, email, order amount, merchant ID</li>
+                        </ul>
+                    </div>
+                    <div class="annotation">
+                        AI model pulls 47 features: SIMAH score, transaction history, device fingerprint, time-of-day, merchant category.
+                    </div>
+                </div>
+                
+                <div class="wireframe">
+                    <div class="wireframe-header">Screen 2: AI Processing</div>
+                    <div class="wireframe-content">
+                        <p style="font-size: 11px;"><strong>Model Pipeline (< 800ms):</strong></p>
+                        <ul style="font-size: 10px; margin-top: 10px;">
+                            <li>Feature extraction: 120ms</li>
+                            <li>Credit scoring: 350ms</li>
+                            <li>Fraud check: 180ms</li>
+                            <li>Limit calculation: 90ms</li>
+                            <li>Response: 60ms</li>
+                        </ul>
+                    </div>
+                    <div class="annotation">
+                        XGBoost model with 500 trees. Alternative data (telecom) queried for thin-file users (+200ms).
+                    </div>
+                </div>
+                
+                <div class="wireframe">
+                    <div class="wireframe-header">Screen 3A: Approval</div>
+                    <div class="wireframe-content">
+                        <p><strong>✓ You're approved!</strong></p>
+                        <p style="font-size: 12px; margin: 10px 0;">
+                            Credit limit: SAR 5,000<br>
+                            Available: SAR 5,000<br><br>
+                            Choose plan:<br>
+                            • 3 months (SAR 400/mo)<br>
+                            • 4 months (SAR 300/mo)
+                        </p>
+                    </div>
+                    <div class="annotation">
+                        92% of users approved. Limit based on predicted default risk (target: < 2.8%).
+                    </div>
+                </div>
+            </div>
+            
+            <div class="wireflow" style="margin-top: 20px;">
+                <div class="wireframe">
+                    <div class="wireframe-header">Screen 3B: Soft Decline</div>
+                    <div class="wireframe-content">
+                        <p style="font-size: 12px;"><strong>Not approved this time</strong></p>
+                        <p style="font-size: 11px; margin: 10px 0;">
+                            We need more info to approve you.<br><br>
+                            Options:<br>
+                            • Upload salary certificate<br>
+                            • Link bank account (Lean)<br>
+                            • Try smaller amount
+                        </p>
+                    </div>
+                    <div class="annotation">
+                        5% of users see soft decline. 40% convert by uploading docs or reducing cart value.
+                    </div>
+                </div>
+                
+                <div class="wireframe">
+                    <div class="wireframe-header">Screen 3C: Hard Decline</div>
+                    <div class="wireframe-content">
+                        <p style="font-size: 12px;"><strong>Unable to approve</strong></p>
+                        <p style="font-size: 11px; margin: 10px 0;">
+                            Alternative payment:<br><br>
+                            • Debit/credit card<br>
+                            • Cash on delivery<br>
+                            • Bank transfer<br><br>
+                            Reapply in 30 days
+                        </p>
+                    </div>
+                    <div class="annotation">
+                        3% hard decline (fraud risk, SIMAH blacklist). No SIMAH hard inquiry until after soft approval.
+                    </div>
+                </div>
+                
+                <div class="wireframe">
+                    <div class="wireframe-header">Screen 4: Limit Increase Trigger</div>
+                    <div class="wireframe-content">
+                        <p style="font-size: 11px;"><strong>Behavioral Signals:</strong></p>
+                        <ul style="font-size: 10px; margin-top: 10px;">
+                            <li>3 on-time payments → +SAR 1,000</li>
+                            <li>High purchase frequency → +SAR 2,000</li>
+                            <li>Salary deposit detected → +SAR 3,000</li>
+                        </ul>
+                        <p style="font-size: 11px; margin-top: 10px;"><strong>User notification sent within 2 hours</strong></p>
+                    </div>
+                    <div class="annotation">
+                        Dynamic limits drive repeat usage. 35% of users increase spending after limit bump.
+                    </div>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 30px;">Prototype Links</h3>
+            <a href="https://figma.com/proto/tamara-express" class="prototype-link">Express Checkout Prototype</a>
+            <a href="https://figma.com/proto/tamara-smartpay" class="prototype-link">SmartPay AI Flow</a>
+        </section>
+
+        <!-- SLIDE 12: KPIs Before/After Part 1 -->
+        <section class="slide">
+            <div class="slide-number">12 / 15</div>
+            <h2>Key Performance Indicators: Before vs. After</h2>
+            
+            <h3>Conversion & Checkout Metrics</h3>
+            <div class="chart-container">
+                <div class="bar-chart">
+                    <div class="bar-row">
+                        <div class="bar-label">Conversion Rate</div>
+                        <div class="bar-visual">
+                            <div class="bar-before" style="width: 41%;">12.3%</div>
+                            <div class="bar-after" style="width: 49%;">14.8% (+20%)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bar-row">
+                        <div class="bar-label">Cart Abandonment</div>
+                        <div class="bar-visual">
+                            <div class="bar-before" style="width: 68%;">68%</div>
+                            <div class="bar-after" style="width: 52%;">52% (-24%)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bar-row">
+                        <div class="bar-label">Avg Checkout Time</div>
+                        <div class="bar-visual">
+                            <div class="bar-before" style="width: 70%;">4.2 min</div>
+                            <div class="bar-after" style="width: 42%;">2.5 min (-40%)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bar-row">
+                        <div class="bar-label">Mobile Conversion</div>
+                        <div class="bar-visual">
+                            <div class="bar-before" style="width: 33%;">9.8%</div>
+                            <div class="bar-after" style="width: 39%;">11.6% (+18%)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <h3>Credit & Risk Metrics</h3>
+            <div class="chart-container">
+                <div class="bar-chart">
+                    <div class="bar-row">
+                        <div class="bar-label">Approval Rate</div>
+                        <div class="bar-visual">
+                            <div class="bar-before" style="width: 78%;">78%</div>
+                            <div class="bar-after" style="width: 92%;">92% (+18%)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bar-row">
+                        <div class="bar-label">Manual Review %</div>
+                        <div class="bar-visual">
+                            <div class="bar-before" style="width: 22%;">22%</div>
+                            <div class="bar-after" style="width: 5%;">5% (-77%)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bar-row">
+                        <div class="bar-label">Decision Time</div>
+                        <div class="bar-visual">
+                            <div class="bar-before" style="width: 70%;">2.1 sec</div>
+                            <div class="bar-after" style="width: 27%;">0.8 sec (-62%)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bar-row">
+                        <div class="bar-label">Thin-File Approval</div>
+                        <div class="bar-visual">
+                            <div class="bar-before" style="width: 62%;">62%</div>
+                            <div class="bar-after" style="width: 77%;">77% (+24%)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 13: KPIs Before/After Part 2 -->
+        <section class="slide">
+            <div class="slide-number">13 / 15</div>
+            <h2>Business Impact Metrics</h2>
+            
+            <h3>Revenue & Growth</h3>
+            <div class="chart-container">
+                <div class="bar-chart">
+                    <div class="bar-row">
+                        <div class="bar-label">Avg Order Value</div>
+                        <div class="bar-visual">
+                            <div class="bar-before" style="width: 57%;">SAR 850</div>
+                            <div class="bar-after" style="width: 68%;">SAR 1,020 (+20%)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bar-row">
+                        <div class="bar-label">Repeat Purchase Rate</div>
+                        <div class="bar-visual">
+                            <div class="bar-before" style="width: 34%;">34%</div>
+                            <div class="bar-after" style="width: 46%;">46% (+35%)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bar-row">
+                        <div class="bar-label">Customer LTV</div>
+                        <div class="bar-visual">
+                            <div class="bar-before" style="width: 48%;">SAR 2,890</div>
+                            <div class="bar-after" style="width: 61%;">SAR 3,670 (+27%)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <h3>Operational Efficiency</h3>
+            <div class="chart-container">
+                <div class="bar-chart">
+                    <div class="bar-row">
+                        <div class="bar-label">Support Tickets</div>
+                        <div class="bar-visual">
+                            <div class="bar-before" style="width: 82%;">12,400/month</div>
+                            <div class="bar-after" style="width: 49%;">7,400/month (-40%)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bar-row">
+                        <div class="bar-label">API Latency (P95)</div>
+                        <div class="bar-visual">
+                            <div class="bar-before" style="width: 70%;">780ms</div>
+                            <div class="bar-after" style="width: 34%;">380ms (-51%)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bar-row">
+                        <div class="bar-label">Infrastructure Cost</div>
+                        <div class="bar-visual">
+                            <div class="bar-before" style="width: 75%;">SAR 420K/mo</div>
+                            <div class="bar-after" style="width: 58%;">SAR 325K/mo (-23%)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <h3>Ramadan 2025 Projections</h3>
+            <table style="margin-top: 30px;">
+                <tr>
+                    <th>Metric</th>
+                    <th>Baseline (Ramadan 2024)</th>
+                    <th>Projected (Ramadan 2025)</th>
+                    <th>Change</th>
+                </tr>
+                <tr>
+                    <td>Peak Daily Orders</td>
+                    <td>48,000</td>
+                    <td>78,000</td>
+                    <td>+63%</td>
+                </tr>
+                <tr>
+                    <td>System Uptime</td>
+                    <td>99.4%</td>
+                    <td>99.95%</td>
+                    <td>+0.55%</td>
+                </tr>
+                <tr>
+                    <td>Surge Capacity</td>
+                    <td>2.1x baseline</td>
+                    <td>3.5x baseline</td>
+                    <td>+67%</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- SLIDE 14: A/B Test Simulation Dashboard -->
+        <section class="slide">
+            <div class="slide-number">14 / 15</div>
+            <h2>A/B Test Results Simulation: Express Checkout</h2>
+            
+            <h3>Test Setup</h3>
+            <div class="two-column">
+                <div>
+                    <h4>Control Group (Current Flow)</h4>
+                    <ul>
+                        <li>Sample size: 15,000 users</li>
+                        <li>Test duration: 14 days</li>
+                        <li>Traffic split: 50/50</li>
+                        <li>Segment: Returning mobile users</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Treatment Group (Express)</h4>
+                    <ul>
+                        <li>Sample size: 15,000 users</li>
+                        <li>Features: One-click, auto-fill, biometric</li>
+                        <li>Tracking: GA4, Mixpanel, Snowflake</li>
+                        <li>Statistical power: 95%</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3>Primary Metrics (Statistical Significance: p < 0.001)</h3>
+            <table>
+                <tr>
+                    <th>Metric</th>
+                    <th>Control</th>
+                    <th>Treatment</th>
+                    <th>Lift</th>
+                    <th>Confidence</th>
+                </tr>
+                <tr style="background: #f0f9f1;">
+                    <td><strong>Conversion Rate</strong></td>
+                    <td>12.8%</td>
+                    <td>15.4%</td>
+                    <td>+20.3%</td>
+                    <td>99.9%</td>
+                </tr>
+                <tr>
+                    <td>Cart Abandonment</td>
+                    <td>67.2%</td>
+                    <td>51.8%</td>
+                    <td>-22.9%</td>
+                    <td>99.8%</td>
+                </tr>
+                <tr>
+                    <td>Avg Session Duration</td>
+                    <td>6.4 min</td>
+                    <td>3.9 min</td>
+                    <td>-39.1%</td>
+                    <td>99.7%</td>
+                </tr>
+                <tr>
+                    <td>Checkout Completion Time</td>
+                    <td>4.1 min</td>
+                    <td>2.4 min</td>
+                    <td>-41.5%</td>
+                    <td>99.9%</td>
+                </tr>
+            </table>
+            
+            <h3>Secondary Metrics</h3>
+            <table>
+                <tr>
+                    <th>Metric</th>
+                    <th>Control</th>
+                    <th>Treatment</th>
+                    <th>Change</th>
+                </tr>
+                <tr>
+                    <td>Avg Order Value</td>
+                    <td>SAR 842</td>
+                    <td>SAR 1,018</td>
+                    <td>+20.9%</td>
+                </tr>
+                <tr>
+                    <td>Items Per Order</td>
+                    <td>2.1</td>
+                    <td>2.7</td>
+                    <td>+28.6%</td>
+                </tr>
+                <tr>
+                    <td>Payment Method Change</td>
+                    <td>18%</td>
+                    <td>4%</td>
+                    <td>-77.8%</td>
+                </tr>
+                <tr>
+                    <td>Support Ticket Rate</td>
+                    <td>3.2%</td>
+                    <td>1.8%</td>
+                    <td>-43.8%</td>
+                </tr>
+            </table>
+            
+            <h3>Segment Analysis: Best Performers</h3>
+            <ul>
+                <li><strong>iOS users:</strong> +24% conversion (biometric adoption: 89%)</li>
+                <li><strong>Riyadh metro:</strong> +27% conversion (fast delivery expectation)</li>
+                <li><strong>Fashion category:</strong> +31% conversion (impulse purchases)</li
